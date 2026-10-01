@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Present Perfect или Present Perfect Continuous? Тренажёр B1+</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400..900&family=Unbounded:wght@600..700&display=swap">
+<style>
+:root{
+  --ink:#1B2235; --muted:#59627A; --paper:#F2F4F9; --card:#FFFFFF; --line:#DCE1EC;
+  --pp:#2A45C9; --pp-soft:#E7EBFB;
+  --ppc-a:#F0AF35; --ppc-b:#F8D68F;
+  --ok:#1C8547; --ok-soft:#E2F3E9; --bad:#BF352B; --bad-soft:#FBE6E4;
+  --hatch:repeating-linear-gradient(135deg,var(--ppc-a) 0 6px,var(--ppc-b) 6px 12px);
+  --display:"Unbounded","Golos Text",system-ui,sans-serif;
+  --text:"Golos Text",system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;scroll-padding-top:72px}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--text);font-size:17px;line-height:1.5}
+.wrap{max-width:780px;margin:0 auto;padding:0 20px}
+button{font:inherit;color:inherit}
+:focus-visible{outline:3px solid var(--pp);outline-offset:2px}
+
+/* hero */
+.hero{padding-top:40px;padding-bottom:8px}
+.hero h1{font-family:var(--display);font-weight:650;font-size:clamp(25px,4.6vw,38px);line-height:1.15;letter-spacing:-.01em;margin:0 0 12px}
+.hero p{margin:0 0 20px;color:var(--muted);max-width:60ch}
+.tl{display:block;width:100%;max-width:540px;height:auto;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:6px 8px}
+.tl text{font-family:var(--text)}
+
+/* sticky bar */
+.bar{position:sticky;top:0;z-index:5;background:rgba(242,244,249,.94);backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px);border-bottom:1px solid var(--line);margin-top:24px}
+.bar .wrap{display:flex;align-items:center;gap:14px;height:56px;font-size:15px}
+.track{flex:1;height:8px;background:var(--line);border-radius:99px;overflow:hidden}
+.track i{display:block;height:100%;width:0;background:var(--ink);border-radius:99px;transition:width .3s}
+.bar b{font-weight:700}
+.tores{display:none;border:0;background:var(--ink);color:#fff;border-radius:8px;padding:6px 12px;font-size:14px;font-weight:600;cursor:pointer}
+.bar.complete .tores{display:inline-block}
+
+/* sections */
+section.part{margin:34px 0}
+.part h2{font-family:var(--display);font-weight:600;font-size:20px;line-height:1.25;margin:0 0 4px}
+.part .hint{margin:0 0 14px;color:var(--muted);font-size:15px}
+.list{background:var(--card);border:1px solid var(--line);border-radius:14px}
+.item{display:grid;grid-template-columns:44px 1fr;gap:4px;padding:20px 20px 20px 10px;border-top:1px solid var(--line)}
+.item:first-child{border-top:0}
+.num{font-weight:700;color:var(--muted);text-align:right;padding-right:10px;font-variant-numeric:tabular-nums;line-height:1.55}
+.sent{margin:0 0 12px;font-size:18px;line-height:1.55}
+.gap{display:inline-block;min-width:5.5em;border-bottom:2px solid var(--ink);text-align:center;line-height:1.2;padding:0 4px}
+.gap.filled{font-weight:700;border-bottom-color:var(--ok);color:var(--ok)}
+
+.opts{display:flex;flex-wrap:wrap;gap:8px}
+.opt{border:1.5px solid #C5CCDC;background:var(--card);border-radius:10px;padding:9px 16px;cursor:pointer;font-size:16px;line-height:1.3;text-align:left}
+.opt:hover:not(:disabled){border-color:var(--ink)}
+.opt:disabled{cursor:default}
+.opt.right{background:var(--ok-soft);border-color:var(--ok);color:#0F5A2F;font-weight:600}
+.opt.wrong{background:var(--bad-soft);border-color:var(--bad);color:#8E2119;text-decoration:line-through}
+.opt.dim{opacity:.55}
+
+.typein{display:inline-block;width:var(--w,9em);max-width:100%;font:inherit;font-size:17px;padding:2px 6px;border:0;border-bottom:2px solid var(--ink);background:#F7F8FC;border-radius:4px 4px 0 0;color:var(--ink)}
+.typein:focus{outline:none;background:var(--pp-soft);border-bottom-color:var(--pp)}
+.typein.ok{border-bottom-color:var(--ok);background:var(--ok-soft);color:#0F5A2F;font-weight:600}
+.typein.bad{border-bottom-color:var(--bad);background:var(--bad-soft);color:#8E2119;text-decoration:line-through}
+.check{border:0;background:var(--ink);color:#fff;border-radius:10px;padding:9px 18px;cursor:pointer;font-size:16px;font-weight:600}
+.check:disabled{display:none}
+.need{color:var(--bad);font-size:14px;margin-left:8px}
+
+.fb{margin-top:14px;padding:12px 14px 12px 16px;border-left:4px solid var(--ok);background:var(--ok-soft);border-radius:0 10px 10px 0;font-size:16px}
+.fb.bad{border-left-color:var(--bad);background:var(--bad-soft)}
+.fb p{margin:0 0 6px}
+.fb p:last-child{margin:0}
+.verdict{font-weight:700}
+.fix{font-weight:600}
+.rule{display:flex;align-items:center;gap:8px;flex-wrap:wrap;font-weight:600}
+.pill{display:inline-block;font-size:13px;font-weight:700;padding:2px 9px;border-radius:99px;line-height:1.5}
+.pill.pp{background:var(--pp);color:#fff}
+.pill.ppc{background:var(--hatch);color:var(--ink)}
+.pill.trap{background:var(--card);color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--ink)}
+
+/* result */
+#result{margin:34px 0 60px;background:var(--ink);color:#fff;border-radius:14px;padding:26px 24px}
+#result h2{font-family:var(--display);font-weight:600;font-size:24px;margin:0 0 8px}
+#result p{margin:0 0 12px}
+#result a{color:#fff;font-weight:700;margin-right:10px}
+#restart{border:0;background:#fff;color:var(--ink);border-radius:10px;padding:10px 20px;font-weight:700;cursor:pointer;font-size:16px}
+
+@media (max-width:560px){
+  body{font-size:16px}
+  .wrap{padding:0 14px}
+  .hero{padding-top:26px}
+  .item{grid-template-columns:30px 1fr;padding:16px 14px 16px 4px}
+  .num{padding-right:6px}
+  .sent{font-size:17px}
+  .opt{flex:1 1 100%}
+  .bar .wrap{gap:10px;font-size:14px}
+}
+@media (prefers-reduced-motion:reduce){.track i{transition:none}}
+</style>
+</head>
+<body>
+
+<header class="wrap hero">
+  <h1>Present Perfect или Present Perfect Continuous?</h1>
+  <p>31 задание в трёх частях. После каждого ответа появится объяснение. В зачёт идёт первая попытка.</p>
+  <svg class="tl" viewBox="0 0 470 214" role="img" aria-label="Схема: Present Perfect — действие в прошлом и результат сейчас; Present Perfect Continuous — процесс, который длится до сейчас">
+    <defs>
+      <pattern id="hatch" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+        <rect width="12" height="12" fill="#F8D68F"/><rect width="6" height="12" fill="#F0AF35"/>
+      </pattern>
+      <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10z" fill="#1B2235"/></marker>
+    </defs>
+    <text x="16" y="32" font-size="20" font-weight="700" fill="#2A45C9">have done</text>
+    <circle cx="112" cy="62" r="10" fill="#2A45C9"/>
+    <line x1="127" y1="62" x2="310" y2="62" stroke="#2A45C9" stroke-width="2.5" stroke-dasharray="7 7"/>
+    <circle cx="332" cy="62" r="16" fill="#2A45C9"/>
+    <path d="M323.5 62 l6 6.5 l11.5 -13" stroke="#fff" stroke-width="3.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    <text x="358" y="68" font-size="17" fill="#1B2235">результат</text>
+
+    <text x="16" y="110" font-size="20" font-weight="700" fill="#9A6200">have been doing</text>
+    <rect x="112" y="124" width="220" height="26" rx="5" fill="url(#hatch)"/>
+    <text x="358" y="143" font-size="17" fill="#1B2235">процесс</text>
+
+    <line x1="16" y1="176" x2="452" y2="176" stroke="#1B2235" stroke-width="2.5" marker-end="url(#arr)"/>
+    <line x1="332" y1="14" x2="332" y2="184" stroke="#1B2235" stroke-width="2.5"/>
+    <text x="16" y="204" font-size="16" fill="#59627A">раньше</text>
+    <text x="332" y="204" font-size="16" font-weight="700" fill="#1B2235" text-anchor="middle">сейчас</text>
+  </svg>
+</header>
+
+<div class="bar" id="bar">
+  <div class="wrap">
+    <span><b id="done">0</b> из <span id="total">0</span></span>
+    <div class="track" aria-hidden="true"><i id="fill"></i></div>
+    <span>верно: <b id="okc">0</b></span>
+    <button class="tores" id="tores" type="button">Результат</button>
+  </div>
+</div>
+
+<main class="wrap" id="app"></main>
+
+<div class="wrap">
+  <section id="result" hidden aria-live="polite"></section>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+var RULES = {
+  pp_count:   ["pp",  "Сколько? Сколько раз?"],
+  pp_result:  ["pp",  "Готовый результат, новость"],
+  pp_state:   ["pp",  "Глагол состояния"],
+  pp_markers: ["pp",  "already, yet, just"],
+  pp_perm:    ["pp",  "Постоянная ситуация, always"],
+  ppc_long:   ["ppc", "Как долго?"],
+  ppc_trace:  ["ppc", "Видимые следы процесса"],
+  ppc_unfin:  ["ppc", "Процесс не закончен"],
+  trap_pres:  ["trap","Present вместо Perfect"],
+  trap_ago:   ["trap","ago, yesterday → Past Simple"]
+};
+var PILL = {pp:"Present Perfect", ppc:"Present Perfect Continuous", trap:"Ловушка"};
+
+var PART1 = [
+  {s:"— Why are your hands so dirty?\n— I ___ in the garden.", o:["'ve worked","'ve been working"], a:1, r:"ppc_trace",
+   e:"Грязные руки — след самого занятия, а не готовый результат. Когда объясняем, почему сейчас что-то видно (грязный, уставший, мокрый), берём Present Perfect Continuous."},
+  {s:"I ___ three chapters of the book so far.", o:["'ve read","'ve been reading"], a:0, r:"pp_count",
+   e:"Три главы — это количество, то есть результат. На вопрос «сколько?» отвечает Present Perfect. Continuous отвечает на вопрос «как долго?»."},
+  {s:"She ___ for the test all week, so she's really tired.", o:["has studied","has been studying"], a:1, r:"ppc_long",
+   e:"All week — длительность, а усталость — следствие долгого процесса. Акцент на самом занятии, поэтому Continuous."},
+  {s:"We ___ each other since primary school.", o:["'ve known","'ve been knowing"], a:0, r:"pp_state",
+   e:"Know — глагол состояния, в форме -ing он не употребляется. Даже с since и for нужен Present Perfect: We've known each other since…"},
+  {s:"How long ___ for the bus?", o:["are you waiting","have you been waiting","did you wait"], a:1, r:"ppc_long",
+   e:"Ждать начали в прошлом и ждут до сих пор, плюс вопрос how long → Present Perfect Continuous. «Are you waiting» — калька с русского «Сколько ты ждёшь?», так нельзя. «Did you wait» — про ожидание, которое уже закончилось."},
+  {s:"I ___ my homework. Can I go out now?", o:["'ve done","'ve been doing"], a:0, r:"pp_result",
+   e:"Домашка готова, поэтому можно гулять — важен результат. Continuous сообщил бы только, что ты ею занимался, но не что закончил."},
+  {s:"This is the third time you ___ me today!", o:["have called","have been calling"], a:0, r:"pp_count",
+   e:"Считаем, сколько раз произошло действие (the third time) → Present Perfect. После This is the first / second / third time… используем Present Perfect."},
+  {s:"Your eyes are red. ___ ?", o:["Have you cried","Have you been crying"], a:1, r:"ppc_trace",
+   e:"Красные глаза — след недавнего процесса. Спрашиваем, чем человек занимался, → Continuous."},
+  {s:"My brother ___ his phone, so he can't call us.", o:["has lost","has been losing"], a:0, r:"pp_result",
+   e:"Потерять — мгновенное действие: оно случилось один раз, результат налицо (телефона нет). Continuous означал бы, что он теряет телефон снова и снова."},
+  {s:"My grandma has always ___ in this village.", o:["lived","been living"], a:0, r:"pp_perm",
+   e:"Always — это постоянная ситуация, «всю жизнь». Для неё берём Present Perfect. Continuous подходит для временной ситуации: She's been living with us since May."},
+  {s:"I ___ the book you gave me. I'm on page 120 now.", o:["'ve read","'ve been reading"], a:1, r:"ppc_unfin",
+   e:"Книга ещё не дочитана — важен сам процесс. I've read the book значило бы, что ты её уже закончил."},
+  {s:"Guess what? Kate ___ a new phone! Look, it's so cool.", o:["has bought","has been buying"], a:0, r:"pp_result",
+   e:"Сообщаем новость о действии с результатом: телефон уже у неё. Новость о свершившемся факте — Present Perfect."}
+];
+
+var PART2 = [
+  {s:"I'm exhausted. I ___ (run) for an hour.", subj:"I", a:["have been running"], show:"'ve been running", r:"ppc_long",
+   e:"For an hour + усталость = долгий процесс, который только что закончился → have been running."},
+  {s:"How many cups of coffee ___ (you / drink) today?", subj:"", a:["have you drunk"], show:"have you drunk", r:"pp_count",
+   e:"How many — считаем количество → Present Perfect. Третья форма: drink — drank — drunk. Today ещё не закончился, поэтому не Past Simple."},
+  {s:"Tom ___ (not / finish) his project yet.", subj:"Tom", a:["has not finished"], show:"hasn't finished", r:"pp_markers",
+   e:"Yet в отрицании — маркер Present Perfect: результата пока нет."},
+  {s:"I ___ (have) this bike since I was ten.", subj:"I", a:["have had"], show:"'ve had", r:"pp_state",
+   e:"Have в значении «иметь, владеть» — глагол состояния, в Continuous не употребляется. Поэтому I've had, а не I've been having."},
+  {s:"Why are you so red? ___ (you / play) basketball?", subj:"", a:["have you been playing"], show:"Have you been playing", r:"ppc_trace",
+   e:"Красное лицо — след недавнего занятия. Спрашиваем о процессе → Have you been playing…?"},
+  {s:"Mum ___ (already / cook) dinner. Let's eat!", subj:"Mum", a:["has already cooked","has cooked already"], show:"has already cooked", r:"pp_markers",
+   e:"Already + готовый результат (ужин на столе) → Present Perfect. Already ставим между has и третьей формой."},
+  {s:"She ___ (practise) the piano for two hours. Let her have a break.", subj:"She", a:["has been practising","has been practicing"], show:"'s been practising", r:"ppc_long",
+   e:"For two hours — длительность, и ей нужен отдых. Акцент на долгом процессе → has been practising."},
+  {s:"I ___ (write) five posts for my blog this month.", subj:"I", a:["have written"], show:"'ve written", r:"pp_count",
+   e:"Пять постов — количество, результат → have written (write — wrote — written). This month ещё идёт, поэтому Present Perfect, а не Past Simple."},
+  {s:"Who ___ (use) my laptop? The battery is dead!", subj:"Who", a:["has been using"], show:"has been using", r:"ppc_trace",
+   e:"Батарея села — след того, что ноутбуком долго пользовались. Нас интересует процесс → has been using."},
+  {s:"This is the first time I ___ (be) to a real concert.", subj:"I", a:["have been"], show:"'ve been", r:"pp_count",
+   e:"После This is the first time… — Present Perfect. Be to = побывать где-то: I've been to…"}
+];
+
+var PART3 = [
+  {s:"I have been knowing him for ages.", err:true, fix:"I have known him for ages.", r:"pp_state",
+   e:"Know — глагол состояния, Continuous с ним невозможен."},
+  {s:"I live here for five years.", err:true, fix:"I have lived / I have been living here for five years.", r:"trap_pres",
+   e:"Действие началось в прошлом и длится до сих пор → Perfect. Present Simple с for — калька с русского «Я живу здесь пять лет». С live и work подходят обе формы Perfect."},
+  {s:"She's been painting the kitchen all day — look at her clothes!", err:false, r:"ppc_trace",
+   e:"Процесс длился весь день, и его следы видны на одежде → Continuous."},
+  {s:"I've been writing three emails this morning.", err:true, fix:"I've written three emails this morning.", r:"pp_count",
+   e:"Три письма — количество, а количество с Continuous не сочетается. Если важно, как долго: I've been writing emails all morning."},
+  {s:"We have finished the project two days ago.", err:true, fix:"We finished the project two days ago.", r:"trap_ago",
+   e:"Ago, yesterday, last week, in 2020 называют законченное время в прошлом. С ними Present Perfect нельзя — только Past Simple."},
+  {s:"How long have you had your dog?", err:false, r:"pp_state",
+   e:"Have = «иметь» — это состояние, поэтому Present Perfect даже с how long."},
+  {s:"It has been raining since Monday.", err:false, r:"ppc_long",
+   e:"Дождь начался в понедельник и идёт до сих пор → Continuous. Since + точка отсчёта."},
+  {s:"Oh no! I have been breaking my phone.", err:true, fix:"Oh no! I've broken my phone.", r:"pp_result",
+   e:"Разбить — одно мгновенное действие с результатом (телефон разбит). Continuous означал бы, что ты разбиваешь его снова и снова."},
+  {s:"They've been waiting for over an hour.", err:false, r:"ppc_long",
+   e:"Ждут больше часа и, скорее всего, ждут до сих пор. Акцент на длительности → Continuous."}
+];
+
+var PARTS = [
+  {id:1, kind:"mc", title:"1. Выбери подходящий вариант", hint:"", items:PART1},
+  {id:2, kind:"type", title:"2. Раскрой скобки", hint:"Впиши глагол в нужной форме. Сокращения (I've, hasn't) тоже засчитываются.", items:PART2},
+  {id:3, kind:"tf", title:"3. Верно или есть ошибка?", hint:"Реши, правильно ли составлено предложение.", items:PART3}
+];
+
+var TOTAL = PART1.length + PART2.length + PART3.length;
+var state; // key -> {done:bool, ok:bool}
+
+var app = document.getElementById("app");
+var resultBox = document.getElementById("result");
+var bar = document.getElementById("bar");
+
+function esc(t){ return String(t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;"); }
+function typo(t){ return t.replace(/'/g,"\u2019"); }
+function txt(t){ return esc(typo(t)).replace(/\n/g,"<br>"); }
+function shuffle(arr){ var a=arr.slice(); for(var i=a.length-1;i>0;i--){ var j=Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+
+function norm(s){
+  s = String(s).toLowerCase().replace(/[\u2019\u2018`\u00b4]/g,"'");
+  s = s.replace(/[.,!?;:()]/g," ");
+  s = s.replace(/n't\b/g," not").replace(/'ve\b/g," have").replace(/'s\b/g," has");
+  return s.replace(/\s+/g," ").trim();
+}
+
+function ruleHTML(key){
+  var r = RULES[key];
+  return '<p class="rule"><span class="pill '+r[0]+'">'+PILL[r[0]]+'</span>'+esc(r[1])+'</p>';
+}
+
+function sentenceWithGap(s, inner){
+  var parts = txt(s).split("___");
+  return parts[0] + inner + (parts[1] || "");
+}
+
+function render(){
+  state = {};
+  var html = "";
+  PARTS.forEach(function(p){
+    html += '<section class="part" aria-labelledby="h'+p.id+'"><h2 id="h'+p.id+'">'+esc(p.title)+'</h2>';
+    if(p.hint) html += '<p class="hint">'+esc(p.hint)+'</p>';
+    else html += '<p class="hint">Нажми на вариант, который подходит по смыслу.</p>';
+    html += '<div class="list">';
+    p.items.forEach(function(it, i){
+      var key = p.id+"-"+(i+1);
+      state[key] = {done:false, ok:false};
+      html += '<article class="item" id="q'+key+'" data-key="'+key+'"><div class="num">'+(i+1)+'</div><div>';
+      if(p.kind==="mc"){
+        html += '<p class="sent">'+sentenceWithGap(it.s,'<span class="gap" aria-label="пропуск">&nbsp;</span>')+'</p><div class="opts">';
+        shuffle(it.o.map(function(o,idx){return idx;})).forEach(function(idx){
+          html += '<button type="button" class="opt" data-part="'+p.id+'" data-i="'+i+'" data-v="'+idx+'">'+txt(it.o[idx])+'</button>';
+        });
+        html += '</div>';
+      } else if(p.kind==="type"){
+        var longest = Math.max.apply(null, it.a.map(function(x){return x.length;}));
+        var w = Math.max(7, Math.min(16, longest*0.62+2)).toFixed(1);
+        html += '<p class="sent">'+sentenceWithGap(it.s,'<input class="typein" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" style="--w:'+w+'em" aria-label="Ответ для предложения '+(i+1)+'" data-part="'+p.id+'" data-i="'+i+'">')+'</p>';
+        html += '<div class="opts"><button type="button" class="check" data-part="'+p.id+'" data-i="'+i+'">Проверить</button><span class="need" hidden>Сначала впиши ответ</span></div>';
+      } else {
+        html += '<p class="sent">'+txt(it.s)+'</p><div class="opts">';
+        html += '<button type="button" class="opt" data-part="'+p.id+'" data-i="'+i+'" data-v="ok">Верно</button>';
+        html += '<button type="button" class="opt" data-part="'+p.id+'" data-i="'+i+'" data-v="err">Есть ошибка</button>';
+        html += '</div>';
+      }
+      html += '<div class="fb" hidden aria-live="polite"></div></div></article>';
+    });
+    html += '</div></section>';
+  });
+  app.innerHTML = html;
+  document.getElementById("total").textContent = TOTAL;
+  resultBox.hidden = true; resultBox.innerHTML = "";
+  bar.classList.remove("complete");
+  updateBar();
+}
+
+function feedback(art, ok, verdictHTML, it){
+  var fb = art.querySelector(".fb");
+  fb.className = "fb" + (ok ? "" : " bad");
+  fb.innerHTML = '<p class="verdict">'+verdictHTML+'</p>' + ruleHTML(it.r) + '<p>'+txt(it.e)+'</p>';
+  fb.hidden = false;
+}
+
+function record(key, ok){
+  state[key].done = true; state[key].ok = ok;
+  updateBar();
+}
+
+function counts(){
+  var d=0, k=0;
+  for(var key in state){ if(state[key].done){ d++; if(state[key].ok) k++; } }
+  return {done:d, ok:k};
+}
+
+function updateBar(){
+  var c = counts();
+  document.getElementById("done").textContent = c.done;
+  document.getElementById("okc").textContent = c.ok;
+  document.getElementById("fill").style.width = (c.done/TOTAL*100)+"%";
+  if(c.done === TOTAL) showResult(c);
+}
+
+function showResult(c){
+  var pct = c.ok / TOTAL;
+  var msg = pct >= 0.9 ? "Отлично! Разница между результатом и процессом понятна."
+          : pct >= 0.7 ? "Хорошо. Посмотри объяснения к ошибкам — там всё по правилам."
+          : "Стоит повторить шпаргалку и пройти тренажёр ещё раз.";
+  var wrong = [];
+  for(var key in state){ if(!state[key].ok) wrong.push(key); }
+  var h = '<h2>Результат: '+c.ok+' из '+TOTAL+'</h2><p>'+msg+'</p>';
+  if(wrong.length){
+    h += '<p>Ошибки (часть.задание): ' + wrong.map(function(k){ return '<a href="#q'+k+'">'+k.replace("-",".")+'</a>'; }).join(" ") + '</p>';
+  }
+  h += '<button type="button" id="restart">Пройти заново</button>';
+  resultBox.innerHTML = h;
+  resultBox.hidden = false;
+  bar.classList.add("complete");
+}
+
+function getItem(btn){
+  var p = PARTS[+btn.getAttribute("data-part")-1];
+  var i = +btn.getAttribute("data-i");
+  return {p:p, i:i, it:p.items[i], key:p.id+"-"+(i+1), art:document.getElementById("q"+p.id+"-"+(i+1))};
+}
+
+function answerMC(btn){
+  var x = getItem(btn); if(state[x.key].done) return;
+  var v = +btn.getAttribute("data-v"), ok = v === x.it.a;
+  x.art.querySelectorAll(".opt").forEach(function(b){
+    b.disabled = true;
+    var bv = +b.getAttribute("data-v");
+    if(bv === x.it.a) b.classList.add("right");
+    else if(b === btn) b.classList.add("wrong");
+    else b.classList.add("dim");
+  });
+  var gap = x.art.querySelector(".gap");
+  gap.innerHTML = txt(x.it.o[x.it.a]); gap.classList.add("filled");
+  feedback(x.art, ok, ok ? "Верно!" : "Неверно. Правильный ответ: <b>"+txt(x.it.o[x.it.a])+"</b>", x.it);
+  record(x.key, ok);
+}
+
+function answerType(el){
+  var x = getItem(el); if(state[x.key].done) return;
+  var input = x.art.querySelector(".typein"), need = x.art.querySelector(".need");
+  var raw = input.value;
+  if(!raw.trim()){ need.hidden = false; input.focus(); return; }
+  need.hidden = true;
+  var u = norm(raw);
+  if(x.it.subj){
+    var sj = norm(x.it.subj) + " ";
+    if(u.indexOf(sj) === 0) u = u.slice(sj.length);
+  }
+  var ok = x.it.a.some(function(ans){ return norm(ans) === u; });
+  input.readOnly = true; input.classList.add(ok ? "ok" : "bad");
+  x.art.querySelector(".check").disabled = true;
+  feedback(x.art, ok, ok ? "Верно!" : "Неверно. Правильный ответ: <b>"+txt(x.it.show)+"</b>", x.it);
+  record(x.key, ok);
+}
+
+function answerTF(btn){
+  var x = getItem(btn); if(state[x.key].done) return;
+  var saysErr = btn.getAttribute("data-v") === "err";
+  var ok = saysErr === x.it.err;
+  x.art.querySelectorAll(".opt").forEach(function(b){
+    b.disabled = true;
+    var isRight = (b.getAttribute("data-v") === "err") === x.it.err;
+    if(isRight) b.classList.add("right");
+    else if(b === btn) b.classList.add("wrong");
+    else b.classList.add("dim");
+  });
+  var v = ok ? "Верно!" : (x.it.err ? "Неверно: здесь есть ошибка." : "Неверно: предложение правильное.");
+  if(x.it.err) v += '</p><p class="fix">Правильно: '+txt(x.it.fix);
+  feedback(x.art, ok, v, x.it);
+  record(x.key, ok);
+}
+
+app.addEventListener("click", function(e){
+  var b = e.target.closest("button"); if(!b) return;
+  var part = b.getAttribute("data-part");
+  if(b.classList.contains("check")) answerType(b);
+  else if(part === "1") answerMC(b);
+  else if(part === "3") answerTF(b);
+});
+app.addEventListener("keydown", function(e){
+  if(e.key === "Enter" && e.target.classList.contains("typein")){ e.preventDefault(); answerType(e.target); }
+});
+resultBox.addEventListener("click", function(e){
+  if(e.target.id === "restart"){ render(); window.scrollTo(0,0); }
+});
+document.getElementById("tores").addEventListener("click", function(){ resultBox.scrollIntoView({behavior:"smooth"}); });
+
+render();
+})();
+</script>
+</body>
+</html>
